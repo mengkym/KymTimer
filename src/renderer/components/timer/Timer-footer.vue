@@ -2,7 +2,7 @@
   <section class="Container Footer">
     <div class="Round-wrapper">
       <p>
-        {{ round + '/' + workRounds }}
+        {{ !longBreakTimer ? '∞' : round + '/' + workRounds }}
         <span
           v-if="totalWorkRounds > 0"
           class="Total-rounds"
@@ -137,6 +137,11 @@ export default {
   },
   computed: {
     // store getters
+
+    longBreakTimer() {
+      return this.$store.getters.longBreakTimer
+    },
+
     currentRound() {
       return this.$store.getters.currentRound
     },
@@ -161,6 +166,7 @@ export default {
   methods: {
     callForReset() {
       EventBus.$emit('call-timer-reset')
+      // this.setTotalWorkRounds(0)
     },
 
     /**
@@ -199,6 +205,10 @@ export default {
 
     setVolume(e) {
       this.$store.dispatch('setVolume', parseInt(e.target.value))
+    },
+
+    setTotalWorkRounds(val) {
+      this.$store.dispatch('setTotalWorkRounds', val)
     }
   },
 

@@ -143,6 +143,7 @@ export default {
     return {
       currentTime: 0,
       minutes: 1,
+      seconds: 0,
       timerActive: false,
       timerStarted: false,
       timerWorker: null
@@ -198,14 +199,20 @@ export default {
 
     timeRemaining() {
       const minutes = this.minutes
+      const seconds = this.seconds
       const time = this.currentTime
       const elapsedMinutes = Math.floor(time / 60)
       const elapsedSeconds = time - elapsedMinutes * 60
-      const remainingSeconds = this.formatTimeDouble(60 - elapsedSeconds)
+      let remainingSeconds = this.formatTimeDouble(60 - elapsedSeconds)
       let remainingMinutes = minutes - elapsedMinutes
 
       if (elapsedSeconds > 0) {
         remainingMinutes -= 1
+      }
+
+      if (this.currentRound === 'short-break') {
+        remainingMinutes = 0
+        remainingSeconds = this.formatTimeDouble(seconds - time)
       }
 
       return {
@@ -268,8 +275,9 @@ export default {
           this.createTimer(this.timeWork)
           break
         case 'short-break':
-          this.minutes = this.timeShortBreak
-          this.createTimer(this.timeShortBreak)
+          this.minutes = 0
+          this.seconds = this.timeShortBreak
+          this.createTimer(0, this.timeShortBreak)
           break
         case 'long-break':
           this.minutes = this.timeLongBreak
@@ -281,9 +289,9 @@ export default {
       }
     },
 
-    createTimer(min) {
+    createTimer(min, sec) {
       if (!this.timerWorker) return
-      this.timerWorker.postMessage({ event: 'create', min })
+      this.timerWorker.postMessage({ event: 'create', min, sec })
     },
 
     pauseTimer() {

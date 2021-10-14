@@ -52,7 +52,7 @@ export const handleMessage = (ws, data) => {
 export const sendGlobalMessage = data => {
   const parsedData = JSON.stringify(data)
 
-  wss.clients.forEach(client => {
+  wss?.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(parsedData)
     }

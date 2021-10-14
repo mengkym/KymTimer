@@ -16,6 +16,7 @@ function generateSettings() {
     breakAlwaysOnTop: false,
     autoStartWorkTimer: true,
     autoStartBreakTimer: true,
+    longBreakTimer: true,
     minToTray: false,
     minToTrayOnClose: false,
     notifications: true,

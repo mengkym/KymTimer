@@ -1,8 +1,8 @@
 export default class Timer extends EventTarget {
-  constructor(min) {
+  constructor(min, sec) {
     super()
     this.time = 0
-    this.totalSeconds = min * 60
+    this.totalSeconds = sec || min * 60
 
     this._complete = new Event('complete')
     this._pause = new Event('pause')

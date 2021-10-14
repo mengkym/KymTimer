@@ -15,6 +15,10 @@ export default {
       return this.$store.getters.autoStartBreakTimer
     },
 
+    longBreakTimer() {
+      return this.$store.getters.longBreakTimer
+    },
+
     currentRound() {
       return this.$store.getters.currentRound
     },
@@ -30,7 +34,7 @@ export default {
 
   methods: {
     checkRound() {
-      if (this.currentRound === 'work' && this.round >= this.workRounds) {
+      if (this.currentRound === 'work' && this.round >= this.workRounds && this.longBreakTimer) {
         this.$store.dispatch('setCurrentRound', 'long-break')
         this.$store.dispatch('incrementTotalWorkRounds')
         EventBus.$emit('ready-long-break')

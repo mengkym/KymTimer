@@ -37,6 +37,14 @@
       ></div>
     </div>
     <div class="Setting-wrapper">
+      <p class="Setting-title">Long Break Timer</p>
+      <div
+        class="Checkbox"
+        @click="selectLongBreakTimer"
+        :class="longBreakTimer ? 'is-active' : 'is-inactive'"
+      ></div>
+    </div>
+    <div class="Setting-wrapper">
       <p class="Setting-title">Tick Sounds - Work</p>
       <div
         class="Checkbox"
@@ -127,6 +135,10 @@ export default {
       return this.$store.getters.autoStartBreakTimer
     },
 
+    longBreakTimer() {
+      return this.$store.getters.longBreakTimer
+    },
+
     minToTray() {
       return this.$store.getters.minToTray
     },
@@ -195,6 +207,15 @@ export default {
       const payload = {
         key: 'autoStartBreakTimer',
         val: !this.autoStartBreakTimer
+      }
+      this.$store.dispatch('setSetting', payload)
+      this.$store.dispatch('setViewState', payload)
+    },
+
+    selectLongBreakTimer() {
+      const payload = {
+        key: 'longBreakTimer',
+        val: !this.longBreakTimer
       }
       this.$store.dispatch('setSetting', payload)
       this.$store.dispatch('setViewState', payload)

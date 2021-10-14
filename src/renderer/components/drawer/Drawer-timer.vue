@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="Setting-wrapper">
+    <!-- <div class="Setting-wrapper">
       <p class="Setting-title">Short Break</p>
       <p class="Setting-value">{{ localTimeShortBreak + ':00' }}</p>
       <div class="Slider-wrapper">
@@ -37,6 +37,25 @@
         <div
           class="Slider-bar Slider-bar--green"
           :style="{ width: calcPercentage(localTimeShortBreak, maxTime) + '%' }"
+        ></div>
+      </div>
+    </div> -->
+    <div class="Setting-wrapper">
+      <p class="Setting-title">Short Break</p>
+      <p class="Setting-value">{{ localTimeShortBreak + ' seconds' }}</p>
+      <div class="Slider-wrapper">
+        <input
+          type="range"
+          min="1"
+          :max="60"
+          step="1"
+          class="Slider Slider--green"
+          v-model.number="localTimeShortBreak"
+          @change="setTimeShortBreak($event, 'short-break')"
+        />
+        <div
+          class="Slider-bar Slider-bar--green"
+          :style="{ width: calcPercentage(localTimeShortBreak, 60) + '%' }"
         ></div>
       </div>
     </div>

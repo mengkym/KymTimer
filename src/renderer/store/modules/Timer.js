@@ -99,6 +99,10 @@ const mutations = {
     state.workRounds = payload
   },
 
+  SET_TOTAL_WORK_ROUNDS(state, payload) {
+    state.totalWorkRounds = payload
+  },
+
   SET_VOLUME(state, payload) {
     state.volume = payload
   },
@@ -161,6 +165,11 @@ const actions = {
   setWorkRounds({ commit }, payload) {
     commit('SET_WORK_ROUNDS', payload)
     localStore.set('workRounds', payload)
+  },
+
+  setTotalWorkRounds({ commit }, payload) {
+    commit('SET_TOTAL_WORK_ROUNDS', payload)
+    localStore.set('totalWorkRounds', payload)
   },
 
   setVolume({ commit }, payload) {

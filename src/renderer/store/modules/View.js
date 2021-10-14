@@ -11,6 +11,10 @@ const state = {
     localStore.get('autoStartBreakTimer') === undefined
       ? true
       : localStore.get('autoStartBreakTimer'),
+  longBreakTimer:
+    localStore.get('longBreakTimer') === undefined
+      ? true
+      : localStore.get('longBreakTimer'),
   alwaysOnTop: localStore.get('alwaysOnTop'),
   breakAlwaysOnTop: localStore.get('breakAlwaysOnTop'),
   minToTray: localStore.get('minToTray'),
@@ -27,6 +31,10 @@ const getters = {
 
   autoStartBreakTimer() {
     return state.autoStartBreakTimer
+  },
+
+  longBreakTimer() {
+    return state.longBreakTimer
   },
 
   currentDrawer() {
