@@ -43,14 +43,14 @@ export default {
 
     notifyLongBreak() {
       this.callNotification({
-        message: `Begin a ${this.timeLongBreak} minute long break.`,
+        message: `Begin a ${this.timeLongBreak} minutes long break.`,
         icon: path.join(__static, 'icon--blue.png')
       })
     },
 
     notifyShortBreak() {
       this.callNotification({
-        message: `Begin a ${this.timeShortBreak} minute short break.`,
+        message: `Begin a ${this.timeShortBreak} seconds short break.`,
         icon: path.join(__static, 'icon--green.png')
       })
     },

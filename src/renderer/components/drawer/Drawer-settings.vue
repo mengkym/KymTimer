@@ -45,6 +45,14 @@
       ></div>
     </div>
     <div class="Setting-wrapper">
+      <p class="Setting-title">Full Screen Break</p>
+      <div
+        class="Checkbox"
+        @click="selectFullScreenBreak"
+        :class="fullScreenBreak ? 'is-active' : 'is-inactive'"
+      ></div>
+    </div>
+    <div class="Setting-wrapper">
       <p class="Setting-title">Tick Sounds - Work</p>
       <div
         class="Checkbox"
@@ -139,6 +147,10 @@ export default {
       return this.$store.getters.longBreakTimer
     },
 
+    fullScreenBreak() {
+      return this.$store.getters.fullScreenBreak
+    },
+
     minToTray() {
       return this.$store.getters.minToTray
     },
@@ -216,6 +228,15 @@ export default {
       const payload = {
         key: 'longBreakTimer',
         val: !this.longBreakTimer
+      }
+      this.$store.dispatch('setSetting', payload)
+      this.$store.dispatch('setViewState', payload)
+    },
+
+    selectFullScreenBreak() {
+      const payload = {
+        key: 'fullScreenBreak',
+        val: !this.fullScreenBreak
       }
       this.$store.dispatch('setSetting', payload)
       this.$store.dispatch('setViewState', payload)

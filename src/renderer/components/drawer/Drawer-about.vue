@@ -30,16 +30,13 @@
           />
         </g>
       </svg>
-      <h2>Pomotroid</h2>
-      <p class="label">
-        Version: {{ version }}
-        <span class="link" @click="openUrl(releaseUrl)">(release notes)</span>
-      </p>
+      <h2>Kym's Timer</h2>
       <p
-        class="label link"
+        class="label"
         @click="openUrl('https://github.com/splode/pomotroid')"
       >
-        License and Documentation
+        Powered by
+      <span class="link" @click="openUrl(releaseUrl)">Pomotroid v{{ version }}</span>
       </p>
     </section>
   </div>

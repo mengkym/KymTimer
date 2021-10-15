@@ -12,7 +12,7 @@
     </app-timer-dial>
 
     <section class="Container Button-wrapper">
-      <transition name="fade" mode="out-in">
+      <transition name="fade" mode="out-in" duration="100">
         <div
           class="Button"
           v-if="!timerStarted"

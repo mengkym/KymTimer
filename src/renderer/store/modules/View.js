@@ -15,6 +15,10 @@ const state = {
     localStore.get('longBreakTimer') === undefined
       ? true
       : localStore.get('longBreakTimer'),
+  fullScreenBreak:
+    localStore.get('fullScreenBreak') === undefined
+      ? false
+      : localStore.get('fullScreenBreak'),
   alwaysOnTop: localStore.get('alwaysOnTop'),
   breakAlwaysOnTop: localStore.get('breakAlwaysOnTop'),
   minToTray: localStore.get('minToTray'),
@@ -35,6 +39,10 @@ const getters = {
 
   longBreakTimer() {
     return state.longBreakTimer
+  },
+
+  fullScreenBreak() {
+    return state.fullScreenBreak
   },
 
   currentDrawer() {

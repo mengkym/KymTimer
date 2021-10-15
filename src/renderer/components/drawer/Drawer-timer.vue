@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <div class="Setting-wrapper">
+    <div class="Setting-wrapper" :class="{ 'disabled': !longBreakTimer }">
       <p class="Setting-title">Long Break</p>
       <p class="Setting-value">{{ localTimeLongBreak + ':00' }}</p>
       <div class="Slider-wrapper">
@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div class="Setting-wrapper">
+    <div class="Setting-wrapper" :class="{ 'disabled': !longBreakTimer }">
       <p class="Setting-title">Rounds</p>
       <p class="Setting-value">{{ localWorkRounds }}</p>
       <div class="Slider-wrapper">
@@ -145,6 +145,10 @@ export default {
 
     workRounds() {
       return this.$store.getters.workRounds
+    },
+
+    longBreakTimer() {
+      return this.$store.getters.longBreakTimer
     }
   },
 
@@ -222,6 +226,11 @@ export default {
 .Setting-wrapper {
   margin: 10px 0;
   text-align: center;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .Setting-title {

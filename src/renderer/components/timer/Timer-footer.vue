@@ -166,7 +166,7 @@ export default {
   methods: {
     callForReset() {
       EventBus.$emit('call-timer-reset')
-      // this.setTotalWorkRounds(0)
+      this.setTotalWorkRounds(0)
     },
 
     /**

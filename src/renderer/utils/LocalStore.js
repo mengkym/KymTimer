@@ -17,6 +17,7 @@ function generateSettings() {
     autoStartWorkTimer: true,
     autoStartBreakTimer: true,
     longBreakTimer: true,
+    fullScreenBreak: false,
     minToTray: false,
     minToTrayOnClose: false,
     notifications: true,
