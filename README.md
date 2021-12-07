@@ -1,95 +1,28 @@
 <div align="center">
-  <img alt="Pomotroid" src=".github/images/pomotroid-title.png" width="800px">
+  <img alt="Pomotroid in action" src=".github/images/pomotroid-screens.png" width="300px">
 </div>
-<div align="center">
-  <img alt="Pomotroid in action" src=".github/images/pomotroid-screens.png" width="800px">
-</div>
-
-<p align="center">Simple and visually-pleasing Pomodoro timer.</p>
 
 ---
 
-- [Overview](#overview)
-- [Features](#features)
-  - [Themes](#themes)
-- [Install](#install)
-  - [Download](#download)
-  - [Homebrew](#homebrew)
-  - [Scoop](#scoop)
-  - [AppGet](#appget)
-- [Roadmap](#roadmap)
-- [Development](#development)
-  - [Build Setup](#build-setup)
-- [License](#license)
-
 ## Overview
 
-Pomotroid is a simple and configurable Pomodoro timer. It aims to provide a visually-pleasing and reliable way to track productivity using the Pomodoro Technique.
+Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)简单修改的番茄钟应用，可以作为"3个20"原则的护眼提醒应用。使用Vue和Electron开发。
 
-Pomotroid is in its early stages, so feedback and contributions are welcome and appreciated! :seedling:
+科学用眼的“三个二十”原则： 每隔20分钟眨眼20下或远眺20秒。亲测可以有效缓解眼疲劳，但是仅靠系统的通知很容易被忽略，经常一天也坚持不了几次，于是加入了强制休息功能。
 
-## Features
+## Reference
 
-- Customize times and number of rounds (persistent)
-- Charming timer alert sounds (optional)
-- Desktop notifications (optional)
-- Minimize to tray (optional)
-- Several themes included with the ability to create custom themes.
-- Timer activity logging.
+[Pomotroid](https://github.com/Splode/pomotroid) 是一个制作精美的番茄钟应用，并且支持多种主题，此项目基于v0.13.0开发。
 
-### Themes
+[FakeBlueScreen](https://github.com/sposer/FakeBlueScreen) 是一个模拟蓝屏应用，此项目除去了其中的"自毁"程序。
+## Modified
 
-Pomotroid provides many themes. It's also theme-able, allowing you to customize its appearance.
-
-![Screenshots of Pomotroid using various themes](./.github/images/pomotroid_themes-preview--914x219.png)
-
-Visit the [theme documentation](./docs/themes/themes.md) to view the full list of official themes and for instruction on creating your own.
-
-## Install
-
-### Download
-
-Download the latest version from the [releases](https://github.com/Splode/pomotroid/releases) page.
-
-Pomotroid is available for Windows, Mac OSX and Linux.
-
-### Homebrew
-
-You can also install Pomotroid on macOS with [Homebrew](https://brew.sh):
-
-```sh
-brew install --cask pomotroid
-```
-
-### Scoop
-
-You can install Pomotroid on Windows with [scoop](https://scoop.sh/)
-
-```sh
-scoop install https://raw.githubusercontent.com/Splode/pomotroid/master/pomotroid.json
-```
-
-### AppGet
-
-You can install Pomotroid on Windows with [AppGet](https://appget.net/)
-
-```sh
-appget install pomotroid
-```
-
-## Roadmap
-
-:memo: Future plans for enhancements and development:
-
-- Mini-mode
+- 修改Short Break为秒钟
+- 增加Long Break选择开关
+- 模拟蓝屏强制休息
 
 ## Development
 
-Pomotroid is built with [Vue.js](https://github.com/vuejs/vue), [Electron](https://github.com/electron/electron), and [electron-vue](https://github.com/SimulatedGREG/electron-vue).
-
-_Note: depending on your OS settings, you may receive a security warning upon installation. This has to do with Pomotroid being an unsigned application. You can find out more by researching code-signing for Apple and Microsoft._
-
-### Build Setup
 
 ```bash
 # install dependencies
@@ -102,6 +35,13 @@ npm run dev
 npm run build
 ```
 
-## License
+## Bugs
 
-MIT &copy; [Christopher Murphy](https://github.com/Splode)
+- 蓝屏程序固定运行20s，不能和休息时间匹配
+- 继承Pomotroid的Bug
+
+## Roadmap
+
+- 推出更多的休息时界面
+- 实现一套自己风格的UI
+- 必不可少的图表
