@@ -21,6 +21,7 @@ function generateSettings() {
     minToTray: false,
     minToTrayOnClose: false,
     notifications: true,
+    forcefullscreen: true,
     workRounds: 4,
     theme: null,
     tickSounds: false,

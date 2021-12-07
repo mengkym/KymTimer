@@ -20,11 +20,15 @@ export default {
     },
     timeWork() {
       return this.$store.getters.timeWork
+    },
+    fullScreen() {
+      return this.$store.getters.fullScreenBreak
     }
   },
 
   methods: {
     callNotification(opts) {
+      if (this.fullScreen) return
       notifier.notify(
         {
           appName: 'com.splode.pomotroid',
