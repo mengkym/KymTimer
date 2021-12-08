@@ -7,6 +7,7 @@
     <app-timer />
     <app-notification-win v-if="os === 'win32' && notifications" />
     <app-notification v-else-if="os !== 'win32' && notifications" />
+    <app-fullscreen />
   </div>
 </template>
 
@@ -14,6 +15,7 @@
 import appDrawer from '@/components/drawer/Drawer'
 import appNotification from '@/components/notification/Notification'
 import appNotificationWin from '@/components/notification/Notification-win'
+import appFullscreen from '@/components/fullscreen/FullScreen'
 import appTimer from '@/components/timer/Timer'
 import appTitlebar from '@/components/Titlebar'
 import themer from '@/utils/Themer'
@@ -26,7 +28,8 @@ export default {
     appNotification,
     appNotificationWin,
     appTimer,
-    appTitlebar
+    appTitlebar,
+    appFullscreen
   },
 
   computed: {

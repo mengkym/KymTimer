@@ -5,7 +5,7 @@ let timer
 self.onmessage = function(msg) {
   switch (msg.data.event) {
     case 'create':
-      handleCreate(msg.data.min)
+      handleCreate(msg.data.min, msg.data.sec)
       break
     case 'pause':
       handlePause()
@@ -26,8 +26,8 @@ self.onmessage = function(msg) {
 
 // External event handlers
 
-function handleCreate(min) {
-  timer = new Timer(min)
+function handleCreate(min, sec) {
+  timer = new Timer(min, sec)
   timer.addEventListener('complete', handleTimerComplete)
   timer.addEventListener('pause', handleTimerPause)
   timer.addEventListener('reset', handleTimerReset)

@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <h1 class="Title">Pomotroid</h1>
+    <h1 class="Title">Kym's Timer</h1>
 
     <div class="Icon-group" style="position: absolute; top: 0; right: 0;">
       <div

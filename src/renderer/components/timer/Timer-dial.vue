@@ -88,7 +88,8 @@ export default {
     },
 
     timeShortBreak() {
-      return this.$store.getters.timeShortBreak * 60 * 1000
+      // return this.$store.getters.timeShortBreak * 60 * 1000
+      return this.$store.getters.timeShortBreak * 1000
     },
 
     timeWork() {
