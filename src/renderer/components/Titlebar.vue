@@ -127,6 +127,7 @@ export default {
 
     winMinimize() {
       ipcRenderer.send('window-minimize', this.minToTray)
+      // ipcRenderer.send('creat-break-window', null)
     }
   }
 }

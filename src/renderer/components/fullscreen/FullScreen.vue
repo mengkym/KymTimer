@@ -2,6 +2,7 @@
 
 <script>
 import { EventBus } from '@/utils/EventBus'
+import { ipcRenderer } from 'electron'
 const path = require('path')
 const exec = require('child_process').exec
 // const cmdStr = 'server'
@@ -30,9 +31,10 @@ export default {
 
   methods: {
     notifyShortBreak() {
-      if (this.fullScreen) {
-        this.runExec()
-      }
+      // if (this.fullScreen) {
+      //   this.runExec()
+      // }
+      ipcRenderer.send('creat-break-window', null)
     },
 
     runExec() {
