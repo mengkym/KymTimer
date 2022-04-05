@@ -2,15 +2,17 @@
   <div id="app">
     <header>
       <h1 class="emotion">:)</h1>
-      </header>
-      <a class="description">Your device is perfectly stable and is running with absolutely no problems whatsoever.<br><p><span>{{progress}}</span>% complete</p></a>
+    </header>
+      <a class="description">
+        Your PC is perfectly stable and is running <br> with absolutely no problems whatsoever.
+        <p class="progress"><span>{{progress}}</span>% complete</p>
+      </a>
       <table>
       <tr>
-          <td><div id="qrcode" style="padding: 16px; width: 110px; height: 110px; background: #fff; display: inline-block"></div></td>
-          <td style="position: absolute; margin-top: -23px;">
-          <p style="margin-left: 8px; margin-top: 18px;"><small>For more information ablout this issue and possible fixes, visit https://www.windows.com/stopcode<br><a style="text-decoration:none; color: #FFF"></a></small></p>
-          <p style="margin-left: 8px; margin-top: 40px;"><small>You can search for this status code online if you'd like.</small></p>
-          <p style="margin-left: 8px; margin-top: -8px;"><small>Status code: ALL_SYSTEMS_GO</small></p>
+          <td>
+            <p>
+              <small>You can search for this status code online if you'd like: ALL_SYSTEMS_GO</small>
+            </p>
           </td>
       </tr>
       </table>
@@ -19,7 +21,6 @@
 
 <script>
 import { EventBus } from '@/utils/EventBus'
-import QRCode from 'qrcodejs2'
 import { ipcRenderer } from 'electron'
 
 export default {
@@ -42,12 +43,9 @@ export default {
   methods: {
     startAnime() {
       this.breakTime = this.shortBreakTime
-      let cursor = 0
-      const arr = this.randomProgress()
       const time = setInterval(() => {
-        this.progress += arr[cursor]
-        cursor++
         this.breakTime--
+        this.progress = ((1 - this.breakTime / this.shortBreakTime) * 100).toFixed(2)
         if (this.breakTime === 0) {
           clearInterval(time)
           ipcRenderer.send('close-break-window', null)
@@ -57,17 +55,6 @@ export default {
 
     skipBreak() {
       EventBus.$emit('timer-completed')
-    },
-
-    generateQR() {
-      this.QRCode = new QRCode(document.getElementById('qrcode'), {
-        text: 'https://www.windows.com/stopcode',
-        width: 110,
-        height: 110,
-        colorDark: '#106faa',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      })
     },
 
     randomProgress() {
@@ -82,16 +69,50 @@ export default {
 
   mounted() {
     this.startAnime()
-    this.generateQR()
   }
 }
 </script>
 
 <style lang="scss">
+#app {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4em;
+}
+
 html,body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Segoe UI Light";
+  font-weight: 300;
+}
+
+body {
+  font-family: "Segoe UI";
+  color: #FFF;
+  background: #106faa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emotion {
+  font-family: "Segoe UI";
+  font-size: 12em;
+  margin: 0;
+}
+
+.description {
+  font-size: 2em;
+  margin-bottom: 1.5em;
+}
+
+.progress {
+  margin-top: 0.5em;
 }
 
 @font-face {
@@ -122,46 +143,6 @@ html,body {
         url(https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff) format("woff"),
         url(https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf) format("truetype");
     font-weight: 400;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Segoe UI Light";
-  font-weight: 300;
-}
-
-body {
-  font-family: "Segoe UI";
-  color: #FFF;
-  background: #106faa;
-  margin: 0;
-}
-
-p {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-}
-
-#app {
-  margin: 5% 8%;
-  margin-right: 30%;
-}
-
-.emotion {
-  font-family: "Segoe UI";
-  font-size: 8em;
-  margin: 0;
-}
-
-.description {
-  font-size: 1.4em;
-  margin-bottom: 3em;
-}
-
-footer small {
-  font-size: 0.8em;
 }
 
 </style>

@@ -128,14 +128,14 @@ ipcMain.on('creat-break-window', (event, arg) => {
   // win.show()
 
   breakWin = new BrowserWindow({
-    width: 600,
-    height: 600,
-    // frame: false,
-    // transparent: true,
-    // fullscreen: true,
+    width: 1280,
+    height: 720,
+    frame: false,
+    transparent: true,
+    fullscreen: true,
     parent: mainWindow,
     webPreferences: {
-      // devTools: false,
+      devTools: false,
       resizable: false,
       nodeIntegration: true,
       enableRemoteModule: true,
