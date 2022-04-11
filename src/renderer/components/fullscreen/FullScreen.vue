@@ -26,15 +26,19 @@ export default {
 
     fullScreen() {
       return this.$store.getters.fullScreenBreak
+    },
+
+    breakType() {
+      return this.$store.getters.breakType
     }
   },
 
   methods: {
     notifyShortBreak() {
-      // if (this.fullScreen) {
-      //   this.runExec()
-      // }
-      ipcRenderer.send('creat-break-window', null)
+      if (this.fullScreen) {
+        // this.runExec()
+        ipcRenderer.send('creat-break-window', this.breakType)
+      }
     },
 
     runExec() {

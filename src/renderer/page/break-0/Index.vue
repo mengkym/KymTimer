@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { EventBus } from '@/utils/EventBus'
 import { ipcRenderer } from 'electron'
 
 export default {
@@ -35,15 +34,19 @@ export default {
       }, 1000)
     },
 
-    skipBreak() {
-      EventBus.$emit('timer-completed')
+    handleTrigger(event) {
+      const theEvent = window.event || event
+      const code = theEvent.keyCode || theEvent.which || theEvent.charCode
+      if (code === 27) {
+        ipcRenderer.send('skip-break', null)
+        ipcRenderer.send('close-break-window', null)
+      }
     }
   },
 
   mounted() {
-    // Volume attribute on audio is not supported
-    // and must be set programmatically.
     this.startAnime()
+    document.addEventListener('keydown', this.handleTrigger)
   }
 }
 </script>
@@ -53,10 +56,6 @@ html,body {
   width: 100%;
   height: 100%;
   background: transparent;
-}
-
-body {
-  // filter: grayscale(80%) saturate(.1) drop-shadow(4px 0 0 red) drop-shadow(-4px 0 0 cyan);
 }
 
 #break {

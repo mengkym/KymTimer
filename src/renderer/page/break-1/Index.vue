@@ -5,7 +5,7 @@
     </header>
       <a class="description">
         Your PC is perfectly stable and is running <br> with absolutely no problems whatsoever.
-        <p class="progress"><span>{{progress}}</span>% complete</p>
+        <p class="progress"><span>{{fillZero(breakTime)}}</span>s remaining</p>
       </a>
       <table>
       <tr>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { EventBus } from '@/utils/EventBus'
 import { ipcRenderer } from 'electron'
 
 export default {
@@ -28,7 +27,6 @@ export default {
   data() {
     return {
       breakTime: 0,
-      progress: 0,
       QRCode: null
     }
   },
@@ -45,7 +43,6 @@ export default {
       this.breakTime = this.shortBreakTime
       const time = setInterval(() => {
         this.breakTime--
-        this.progress = ((1 - this.breakTime / this.shortBreakTime) * 100).toFixed(2)
         if (this.breakTime === 0) {
           clearInterval(time)
           ipcRenderer.send('close-break-window', null)
@@ -53,22 +50,24 @@ export default {
       }, 1000)
     },
 
-    skipBreak() {
-      EventBus.$emit('timer-completed')
+    fillZero(num) {
+      return num < 10 ? '0' + num : num
     },
 
-    randomProgress() {
-      const arr = new Array(100).fill(0)
-      for (let i = 0; i < 100; i++) {
-        var num = parseInt((Math.random() * 100).toString())
-        arr[num]++
+    handleTrigger(event) {
+      const theEvent = window.event || event
+      const code = theEvent.keyCode || theEvent.which || theEvent.charCode
+      // press esc to skip break
+      if (code === 27) {
+        ipcRenderer.send('skip-break', null)
+        ipcRenderer.send('close-break-window', null)
       }
-      return arr
     }
   },
 
   mounted() {
     this.startAnime()
+    document.addEventListener('keydown', this.handleTrigger)
   }
 }
 </script>

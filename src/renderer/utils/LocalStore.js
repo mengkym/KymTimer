@@ -30,6 +30,7 @@ function generateSettings() {
     timeShortBreak: 5,
     timeWork: 25,
     volume: 100,
+    breakType: 0,
     globalShortcuts: { // If new shortcuts are added, the migrations of this should be handled
       'call-timer-toggle': 'Control+F1',
       'call-timer-reset': 'Control+F2',

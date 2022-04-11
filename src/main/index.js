@@ -121,12 +121,9 @@ ipcMain.on('reload-global-shortcuts', (event, shortcuts) => {
   loadGlobalShortcuts(shortcuts)
 })
 
-ipcMain.on('creat-break-window', (event, arg) => {
+ipcMain.on('creat-break-window', (event, type) => {
   // reload shortcuts when they are modified.
   // logger.info('create transp window')
-  // const win = new BrowserWindow({ width: 800, height: 600, frame: true })
-  // win.show()
-
   breakWin = new BrowserWindow({
     width: 1280,
     height: 720,
@@ -142,14 +139,18 @@ ipcMain.on('creat-break-window', (event, arg) => {
       backgroundThrottling: false
     }
   })
-
-  breakWin.loadURL(winURL('break-bsod'))
+  breakWin.loadURL(winURL('break-') + type)
   breakWin.on('show', () => { })
   breakWin.on('closed', () => { breakWin = null })
 })
 
 ipcMain.on('close-break-window', (event, arg) => {
   breakWin.close()
+})
+
+// skip must below the close event
+ipcMain.on('skip-break', (event, arg) => {
+  mainWindow.webContents.send('event-bus', 'timer-completed')
 })
 
 function getNewWindowPosition() {
@@ -245,6 +246,10 @@ function createWindow() {
   // send event to renderer on window show
   mainWindow.on('show', () => {
     mainWindow.webContents.send('win-show')
+  })
+
+  mainWindow.on('closed', () => {
+    mainWindow = null
   })
 
   mainWindow.on('closed', () => {

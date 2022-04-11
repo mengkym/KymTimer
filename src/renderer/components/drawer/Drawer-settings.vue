@@ -52,6 +52,36 @@
         :class="fullScreenBreak ? 'is-active' : 'is-inactive'"
       ></div>
     </div>
+    <transition name="slide-up" mode="in-out">
+      <div class="Break-wrapper" v-show="fullScreenBreak">
+        <div class="Break-item"
+        :style="{ backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${getImagePath(0)})`}">
+          <p class="Setting-title">Floating Number</p>
+          <div
+            class="Checkbox"
+            @click="selectBreakType(0)"
+            :class="breakType == 0 ? 'is-active' : 'is-inactive'"
+          ></div>
+        </div>
+        <div class="Break-item"
+        :style="{ backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${getImagePath(1)})`}">
+          <p class="Setting-title">BSoD</p>
+          <div
+            class="Checkbox"
+            @click="selectBreakType(1)"
+            :class="breakType == 1 ? 'is-active' : 'is-inactive'"
+          ></div>
+        </div>
+        <div class="Break-item disabled">
+          <p class="Setting-title">Coming soon...</p>
+          <div
+            class="Checkbox"
+            @click="selectBreakType(2)"
+            :class="breakType == 2 ? 'is-active' : 'is-inactive'"
+          ></div>
+        </div>
+      </div>
+    </transition>
     <div class="Setting-wrapper">
       <p class="Setting-title">Tick Sounds - Work</p>
       <div
@@ -151,6 +181,10 @@ export default {
       return this.$store.getters.fullScreenBreak
     },
 
+    breakType() {
+      return this.$store.getters.breakType
+    },
+
     minToTray() {
       return this.$store.getters.minToTray
     },
@@ -242,6 +276,19 @@ export default {
       this.$store.dispatch('setViewState', payload)
     },
 
+    selectBreakType(type) {
+      const payload = {
+        key: 'breakType',
+        val: type
+      }
+      this.$store.dispatch('setSetting', payload)
+      this.$store.dispatch('setViewState', payload)
+    },
+
+    getImagePath(order) {
+      return '/static/break/' + order + '.jpg'
+    },
+
     selectMinToTray() {
       const payload = {
         key: 'minToTray',
@@ -295,6 +342,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .Checkbox {
   background-color: var(--color-background);
   border: 2px solid var(--color-background-lightest);
@@ -328,6 +380,28 @@ export default {
   justify-content: space-between;
   margin: 12px 0;
   padding: 12px;
+}
+
+.Break-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px -3px;
+}
+
+.Break-item {
+  background: no-repeat center top / 100% 100%;
+  background-color: var(--color-background);
+  border-radius: 4px;
+  width: 40%;
+  height: 45px;
+  margin: 6px 3px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
 }
 
 .Setting-title {

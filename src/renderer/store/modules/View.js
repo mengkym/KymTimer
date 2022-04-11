@@ -19,6 +19,7 @@ const state = {
     localStore.get('fullScreenBreak') === undefined
       ? false
       : localStore.get('fullScreenBreak'),
+  breakType: localStore.get('breakType'),
   alwaysOnTop: localStore.get('alwaysOnTop'),
   breakAlwaysOnTop: localStore.get('breakAlwaysOnTop'),
   minToTray: localStore.get('minToTray'),
@@ -43,6 +44,10 @@ const getters = {
 
   fullScreenBreak() {
     return state.fullScreenBreak
+  },
+
+  breakType() {
+    return state.breakType
   },
 
   currentDrawer() {
