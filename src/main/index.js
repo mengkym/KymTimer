@@ -24,11 +24,13 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow, tray
-const winURL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:9080'
-    : `file://${__dirname}/index.html`
+let mainWindow, breakWin, tray
+
+const winURL = (path) => {
+  return process.env.NODE_ENV === 'development'
+    ? `http://localhost:9080/${path}`
+    : `file://${__dirname}/${path}/index.html`
+}
 
 app.disableHardwareAcceleration()
 
@@ -119,6 +121,38 @@ ipcMain.on('reload-global-shortcuts', (event, shortcuts) => {
   loadGlobalShortcuts(shortcuts)
 })
 
+ipcMain.on('creat-break-window', (event, type) => {
+  // reload shortcuts when they are modified.
+  // logger.info('create transp window')
+  breakWin = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    frame: false,
+    transparent: true,
+    fullscreen: true,
+    parent: mainWindow,
+    webPreferences: {
+      devTools: false,
+      resizable: false,
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      backgroundThrottling: false
+    }
+  })
+  breakWin.loadURL(winURL('break-') + type)
+  breakWin.on('show', () => { })
+  breakWin.on('closed', () => { breakWin = null })
+})
+
+ipcMain.on('close-break-window', (event, arg) => {
+  breakWin.close()
+})
+
+// skip must below the close event
+ipcMain.on('skip-break', (event, arg) => {
+  mainWindow.webContents.send('event-bus', 'timer-completed')
+})
+
 function getNewWindowPosition() {
   const windowBounds = mainWindow.getBounds()
   const trayBounds = tray.getBounds()
@@ -202,7 +236,7 @@ function createWindow() {
     }
   })
 
-  mainWindow.loadURL(winURL)
+  mainWindow.loadURL(winURL('main'))
 
   // send event to renderer on window restore
   mainWindow.on('restore', () => {
@@ -212,6 +246,10 @@ function createWindow() {
   // send event to renderer on window show
   mainWindow.on('show', () => {
     mainWindow.webContents.send('win-show')
+  })
+
+  mainWindow.on('closed', () => {
+    mainWindow = null
   })
 
   mainWindow.on('closed', () => {

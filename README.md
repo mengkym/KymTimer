@@ -6,20 +6,18 @@
 
 ## Overview
 
-Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)简单修改的番茄钟应用，可以作为"3个20"原则的护眼提醒应用。使用Vue和Electron开发。
+Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)简单修改的番茄钟应用，符合"3个20"护眼原则。使用Vue和Electron开发。
 
-科学用眼的“三个二十”原则： 每隔20分钟眨眼20下或远眺20秒。亲测可以有效缓解眼疲劳，但是仅靠系统的通知很容易被忽略，经常一天也坚持不了几次，于是加入了强制休息功能。
+科学用眼的“三个二十”原则： 每隔20分钟眨眼20下或远眺20秒,可以有效缓解眼疲劳。
 
 ## Reference
 
 [Pomotroid](https://github.com/Splode/pomotroid) 是一个制作精美的番茄钟应用，并且支持多种主题，此项目基于v0.13.0开发。
-
-[FakeBlueScreen](https://github.com/sposer/FakeBlueScreen) 是一个模拟蓝屏应用，此项目除去了其中的"自毁"程序。
 ## Modified
 
 - 修改Short Break为秒钟
 - 增加Long Break选择开关
-- 模拟蓝屏强制休息
+- 增加全屏提醒
 
 ## Development
 

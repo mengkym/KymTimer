@@ -33,3 +33,20 @@
 .slide-left-leave {
   transform: translateX(0);
 }
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: $transitionSnappy;
+}
+
+.slide-up-enter,
+.slide-up-leave-to {
+  opacity: 0.5;
+  transform: translateY(-16vw);
+}
+
+.slide-up-enter-to,
+.slide-up-leave {
+  transform: translateX(0);
+}
+
