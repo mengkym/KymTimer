@@ -1,12 +1,12 @@
 <div align="center">
-  <img alt="Pomotroid in action" src=".github/images/pomotroid-screens.png" width="300px">
+  <img alt="Pomotroid in action" src=".github/images/pomotroid-screens.png" width="600px">
 </div>
 
 ---
 
 ## Overview
 
-Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)简单修改的番茄钟应用，符合"3个20"护眼原则。使用Vue和Electron开发。
+Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)魔改的番茄钟应用，符合"3个20"护眼原则。使用Vue和Electron开发。
 
 科学用眼的“三个二十”原则： 每隔20分钟眨眼20下或远眺20秒,可以有效缓解眼疲劳。
 
@@ -17,7 +17,7 @@ Kym's Timer 是一个基于[Pomotroid](https://github.com/Splode/pomotroid)简�
 
 - 修改Short Break为秒钟
 - 增加Long Break选择开关
-- 增加全屏提醒
+- 增加两种全屏提醒
 
 ## Development
 
@@ -35,8 +35,7 @@ npm run build
 
 ## Bugs
 
-- 蓝屏程序固定运行20s，不能和休息时间匹配
-- 继承Pomotroid的Bug
+- break时仍然可以操作
 
 ## Roadmap
 
