@@ -19,7 +19,8 @@ module.exports = {
     'generator-star-spacing': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'space-before-function-paren': ['error', 'never']
+    'space-before-function-paren': ['error', 'never'],
+    'no-unused-vars': 'off'
   },
   extends: ['standard', 'plugin:vue/base']
 }
