@@ -29,7 +29,10 @@ export default {
         this.breakTime--
         if (this.breakTime === 0) {
           clearInterval(time)
-          ipcRenderer.send('close-break-window', null)
+          ipcRenderer.send('close-break-window', {
+            total: this.shortBreakTime,
+            fulfill: this.shortBreakTime - this.breakTime
+          })
         }
       }, 1000)
     },
@@ -39,7 +42,10 @@ export default {
       const code = theEvent.keyCode || theEvent.which || theEvent.charCode
       if (code === 27) {
         ipcRenderer.send('skip-break', null)
-        ipcRenderer.send('close-break-window', null)
+        ipcRenderer.send('close-break-window', {
+          total: this.shortBreakTime,
+          fulfill: this.shortBreakTime - this.breakTime
+        })
       }
     }
   },
@@ -55,7 +61,9 @@ export default {
 html,body {
   width: 100%;
   height: 100%;
-  background: transparent;
+  // background: center center / cover rgba(244, 247, 254, 0.2);
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(5px)
 }
 
 #break {
@@ -64,8 +72,6 @@ html,body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  opacity: 0.5;
 }
 
 h1 {

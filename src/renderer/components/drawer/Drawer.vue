@@ -13,6 +13,7 @@ import appDrawerAbout from '@/components/drawer/Drawer-about'
 import appDrawerSettings from '@/components/drawer/Drawer-settings'
 import appDrawerTheme from '@/components/drawer/Drawer-theme'
 import appDrawerTimer from '@/components/drawer/Drawer-timer'
+import appDrawerChart from '@/components/drawer/Drawer-chart'
 
 export default {
   name: 'Drawer',
@@ -22,7 +23,8 @@ export default {
     appDrawerAbout,
     appDrawerSettings,
     appDrawerTheme,
-    appDrawerTimer
+    appDrawerTimer,
+    appDrawerChart
   },
 
   computed: {

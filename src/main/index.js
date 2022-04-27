@@ -2,6 +2,8 @@
 
 import { logger } from './../renderer/utils/logger'
 import { createLocalStore } from './../renderer/utils/LocalStore'
+import { store } from '../renderer/utils/ElectronStore'
+import { dateFormat } from '../renderer/utils/DateFormat'
 import {
   app,
   globalShortcut,
@@ -145,6 +147,13 @@ ipcMain.on('creat-break-window', (event, type) => {
 })
 
 ipcMain.on('close-break-window', (event, arg) => {
+  const arr = store.get('items') || []
+  arr.push({
+    time: dateFormat('HH-MM-ss'),
+    total: arg.total,
+    fulfill: arg.fulfill
+  })
+  store.set('items', arr)
   breakWin.close()
 })
 
