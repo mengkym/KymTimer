@@ -45,7 +45,10 @@ export default {
         this.breakTime--
         if (this.breakTime === 0) {
           clearInterval(time)
-          ipcRenderer.send('close-break-window', null)
+          ipcRenderer.send('close-break-window', {
+            total: this.shortBreakTime,
+            fulfill: this.shortBreakTime - this.breakTime
+          })
         }
       }, 1000)
     },
@@ -60,7 +63,10 @@ export default {
       // press esc to skip break
       if (code === 27) {
         ipcRenderer.send('skip-break', null)
-        ipcRenderer.send('close-break-window', null)
+        ipcRenderer.send('close-break-window', {
+          total: this.shortBreakTime,
+          fulfill: this.shortBreakTime - this.breakTime
+        })
       }
     }
   },

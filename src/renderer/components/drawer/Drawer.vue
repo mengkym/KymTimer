@@ -44,4 +44,8 @@ export default {
   z-index: 1;
   -webkit-app-region: no-drag;
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .15s;
+}
 </style>

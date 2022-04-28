@@ -1,105 +1,62 @@
 <template>
   <div class="Container">
     <p class="Drawer-heading">Charts</p>
-    <!-- <div class="Charts-wrapper"> -->
-        <transition-group class="Charts-wrapper" name="onebyone">
-            <div class="Chart-item" v-for="(item) in list" :key="item.time" :title="item.time">
-                <canvas :id="'logDial' + item.time">{{ drawArc(item.time, item.fulfill / item.total)}}</canvas>
-            </div>
-        </transition-group>
-    <!-- </div> -->
+    <div class="Charts-wrapper">
+      <div class="Chart-item" v-for="(item) in getBreakLog" :key="item.time" :title="item.fulfill + '/' + item.total">
+         <svg :id="'logDial' + item.time" class="Dial-fill" width="36px" height="36px" xml:space="preserve" viewBox="0 0 36 36">
+            <circle r="8.999" cx="18" cy="18" stroke-width="18"/>
+          </svg>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { store } from '@/utils/ElectronStore'
+import anime from 'animejs'
 
 export default {
   name: 'DrawerAbout',
   data() {
     return {
-      list: [],
-      start: 0,
-      lastTime: 0,
-      loopCount: 0
-    }
-  },
-  watch: {
-    loopCount: function(val) {
-      const el = document.querySelector('.Charts-wrapper')
-      if (val < this.getBreakLog.length * 2) {
-        el.setAttribute('style', 'overflow:hidden;')
-      } else {
-        el.setAttribute('style', 'overflow:auto;')
-      }
+      dial: null
     }
   },
   computed: {
     getBreakLog() {
-      return store.get('items')
+      return store.getAll()
     }
   },
   mounted() {
     this.pushItems()
   },
   methods: {
-    pushItems(timestamp) {
-      if (!this.start) this.start = timestamp
-      if (!this.lastTime) this.lastTime = timestamp
-      this.lastTime = timestamp
-      this.loopCount++
-      if (this.loopCount < this.getBreakLog.length) {
-        this.list.push(this.getBreakLog[this.loopCount])
-      }
-      const drawTask = window.requestAnimationFrame(this.pushItems)
-      if (this.loopCount >= this.getBreakLog.length * 2) {
-        cancelAnimationFrame(drawTask)
+    pushItems() {
+      for (const item of this.getBreakLog) {
+        this.dialAnimation(600, item.time, item.fulfill / item.total)
       }
     },
-    drawArc(id, percent) {
-      this.$nextTick(() => {
-        const element = document.getElementById('logDial' + id)
-        const bgVar = document.documentElement.style.getPropertyValue('--color-background')
-        const shortVar = document.documentElement.style.getPropertyValue('--color-short-round')
-        const size = 34
-        const arcRadiusRatio = 0.5 // 0.55
-        const arcLineWidthRatio = 1 // 0.3
-        const bgColor = !bgVar ? '#2F384B' : bgVar
-        const fgColor = !shortVar ? '#05EB8B' : shortVar
-        const outerRadius = size / 2
-        const innerRadius = outerRadius * arcRadiusRatio
-        const lineWidth = outerRadius * arcLineWidthRatio
-        const fullCircle = 2 * Math.PI
-        const startAngle = -Math.PI / 2
-        const endAngle = percent * fullCircle + startAngle
-        const center = outerRadius
-        const ctx = element.getContext('2d')
-        element.width = size
-        element.height = size
-        ctx.fillStyle = bgColor
-        ctx.strokeStyle = fgColor
-        ctx.lineWidth = lineWidth
-        ctx.beginPath()
-        ctx.arc(center, center, innerRadius, startAngle, endAngle, false)
-        ctx.fill()
-        ctx.stroke()
+    dialAnimation(duration, id, percent) {
+      this.dial = anime({
+        targets: `#logDial${id} circle`,
+        strokeDashoffset: function(el) {
+          var svgLength = anime.setDashoffset(el)
+          return [svgLength * (1 - percent), svgLength]
+        },
+        easing: 'easeInOutQuad',
+        duration: duration,
+        direction: 'reverse',
+        autoplay: true
       })
+      this.dial.seek(this.dial.duration)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-h2 {
-  color: var(--color-short-round);
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  margin: 0.5em 0;
-}
-
 .Container {
   max-height: calc(100% - 36px);
-  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -117,29 +74,17 @@ h2 {
   background-color: var(--color-background);
 }
 
-.label {
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  line-height: 2;
-  & .link,
-  &.link {
-    cursor: pointer;
-    transition: $transitionDefault;
-    &:hover {
-      color: var(--color-accent);
-    }
-  }
+.Dial-fill {
+  border-radius: 50%;
+  background-color: var(--color-background);
+  transform-origin: center;
+  transform: rotate(-90deg);
+  -webkit-app-region: no-drag;
 }
 
-.onebyone-enter-active,
-.onebyone-leave-active {
-  transition: all 0.2s ease-in;
-}
-
-.onebyone-enter,
-.onebyone-leave-to {
-  opacity: 0;
-  transform: translate(4px, 34px);
+.Dial-fill circle {
+  fill: var(--color-background);
+  stroke: var(--color-short-round);
 }
 
 </style>
