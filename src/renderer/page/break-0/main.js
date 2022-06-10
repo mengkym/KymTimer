@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Index from './index'
+import Index from './Index'
 import store from '../../store'
 
 // if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

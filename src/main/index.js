@@ -141,7 +141,7 @@ ipcMain.on('creat-break-window', (event, type) => {
       backgroundThrottling: false
     }
   })
-  breakWin.loadURL(winURL('break-') + type)
+  breakWin.loadURL(winURL('break-' + type))
   breakWin.on('show', () => { })
   breakWin.on('closed', () => { breakWin = null })
 })
