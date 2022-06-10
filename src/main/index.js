@@ -141,19 +141,13 @@ ipcMain.on('creat-break-window', (event, type) => {
       backgroundThrottling: false
     }
   })
-  breakWin.loadURL(winURL('break-') + type)
+  breakWin.loadURL(winURL('break-' + type))
   breakWin.on('show', () => { })
   breakWin.on('closed', () => { breakWin = null })
 })
 
 ipcMain.on('close-break-window', (event, arg) => {
-  const arr = store.get('items') || []
-  arr.push({
-    time: dateFormat('HH-MM-ss'),
-    total: arg.total,
-    fulfill: arg.fulfill
-  })
-  store.set('items', arr)
+  store.pushItem(arg.total, arg.fulfill)
   breakWin.close()
 })
 

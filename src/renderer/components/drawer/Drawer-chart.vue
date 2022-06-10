@@ -1,112 +1,157 @@
 <template>
   <div class="Container">
     <p class="Drawer-heading">Charts</p>
-    <!-- <div class="Charts-wrapper"> -->
-        <transition-group class="Charts-wrapper" name="onebyone">
-            <div class="Chart-item" v-for="(item) in list" :key="item.time" :title="item.time">
-                <canvas :id="'logDial' + item.time">{{ drawArc(item.time, item.fulfill / item.total)}}</canvas>
-            </div>
-        </transition-group>
-    <!-- </div> -->
+    <div class="Heatmap-wrapper" v-show="chartType =='month'">
+      <div id="cal-heatmap"></div>
+    </div>
+    <div class="Charts-wrapper" v-show="chartType =='day'">
+      <div class="Chart-item" v-for="(item) in dayBreakLog" :key="item.time" :title="item.fulfill + '/' + item.total">
+         <svg :id="'logDial' + item.time" class="Dial-fill" width="36px" height="36px" xml:space="preserve" viewBox="0 0 36 36">
+            <circle r="8.999" cx="18" cy="18" stroke-width="18"/>
+          </svg>
+      </div>
+    </div>
+    <div class="chart-button-group">
+      <div class="chart-button" v-show="chartType =='month'" id="previousSelector-a-previous"> Prev </div>
+      <div class="chart-button" v-show="chartType =='month'" id="previousSelector-a-next"> Next </div>
+      <div class="chart-button" v-show="chartType =='day'" @click="chartType='month'"> Back </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { store } from '@/utils/ElectronStore'
+import anime from 'animejs'
+import * as d3 from 'd3'
+import CalHeatMap from 'cal-heatmap'
 
 export default {
   name: 'DrawerAbout',
   data() {
     return {
-      list: [],
-      start: 0,
-      lastTime: 0,
-      loopCount: 0
-    }
-  },
-  watch: {
-    loopCount: function(val) {
-      const el = document.querySelector('.Charts-wrapper')
-      if (val < this.getBreakLog.length * 2) {
-        el.setAttribute('style', 'overflow:hidden;')
-      } else {
-        el.setAttribute('style', 'overflow:auto;')
-      }
-    }
-  },
-  computed: {
-    getBreakLog() {
-      return store.get('items')
+      chartType: 'month', // month, day
+      dayBreakLog: []
     }
   },
   mounted() {
-    this.pushItems()
+    this.initCalHeatMap()
   },
   methods: {
-    pushItems(timestamp) {
-      if (!this.start) this.start = timestamp
-      if (!this.lastTime) this.lastTime = timestamp
-      this.lastTime = timestamp
-      this.loopCount++
-      if (this.loopCount < this.getBreakLog.length) {
-        this.list.push(this.getBreakLog[this.loopCount])
-      }
-      const drawTask = window.requestAnimationFrame(this.pushItems)
-      if (this.loopCount >= this.getBreakLog.length * 2) {
-        cancelAnimationFrame(drawTask)
+    getBreakLog() {
+      return store.getYear()
+    },
+    getBreakLogDay(day) {
+      return store.getDay(day)
+    },
+    initCalHeatMap() {
+      const cal = new CalHeatMap()
+      cal.init({
+        range: 2,
+        cellSize: 14,
+        cellRadius: 3,
+        cellPadding: 5,
+        domainGutter: 28,
+        domainMargin: [42, 0, 0, 0],
+        domainDynamicDimension: false,
+        legendMargin: [42, 0, 0, 0],
+        legendVerticalPosition: 'bottom',
+        legendHorizontalPosition: 'left',
+        domain: 'month',
+        subDomain: 'x_day',
+        start: new Date(2022, 4, 1),
+        itemName: ['second', 'seconds'],
+        subDomainDateFormat: '%Y-%m-%d',
+        previousSelector: '#previousSelector-a-previous',
+        nextSelector: '#previousSelector-a-next',
+        data: this.getBreakLog(),
+        dataType: 'json',
+        onClick: this.clickHeatMapCell
+      })
+    },
+    clickHeatMapCell(date, value) {
+      if (value !== null) {
+        this.dayBreakLog = this.getBreakLogDay(date)
+        this.chartType = 'day'
+        this.$nextTick(() => {
+          for (const item of this.dayBreakLog) {
+            this.dialAnimation(600, item.time, item.fulfill / item.total)
+          }
+        })
       }
     },
-    drawArc(id, percent) {
-      this.$nextTick(() => {
-        const element = document.getElementById('logDial' + id)
-        const bgVar = document.documentElement.style.getPropertyValue('--color-background')
-        const shortVar = document.documentElement.style.getPropertyValue('--color-short-round')
-        const size = 34
-        const arcRadiusRatio = 0.5 // 0.55
-        const arcLineWidthRatio = 1 // 0.3
-        const bgColor = !bgVar ? '#2F384B' : bgVar
-        const fgColor = !shortVar ? '#05EB8B' : shortVar
-        const outerRadius = size / 2
-        const innerRadius = outerRadius * arcRadiusRatio
-        const lineWidth = outerRadius * arcLineWidthRatio
-        const fullCircle = 2 * Math.PI
-        const startAngle = -Math.PI / 2
-        const endAngle = percent * fullCircle + startAngle
-        const center = outerRadius
-        const ctx = element.getContext('2d')
-        element.width = size
-        element.height = size
-        ctx.fillStyle = bgColor
-        ctx.strokeStyle = fgColor
-        ctx.lineWidth = lineWidth
-        ctx.beginPath()
-        ctx.arc(center, center, innerRadius, startAngle, endAngle, false)
-        ctx.fill()
-        ctx.stroke()
+    dialAnimation(duration, id, percent) {
+      this.dial = anime({
+        targets: `#logDial${id} circle`,
+        strokeDashoffset: function(el) {
+          var svgLength = anime.setDashoffset(el)
+          return [svgLength * (1 - percent), svgLength]
+        },
+        easing: 'easeInOutQuad',
+        duration: duration,
+        direction: 'reverse',
+        autoplay: true
       })
+      this.dial.seek(this.dial.duration)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-h2 {
-  color: var(--color-short-round);
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  margin: 0.5em 0;
-}
-
+@import '../../assets/stylesheets/cal-heatmap.css';
 .Container {
   max-height: calc(100% - 36px);
-  overflow-x: hidden;
   overflow-y: auto;
 }
 
+.Heatmap-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#cal-heatmap {
+  height: 300px;
+}
+
+.chart-button-group {
+  position: absolute;
+  bottom: 36px;
+  width: 100%;
+  margin-left: -18px;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-button {
+  font-size: 1rem;
+  font-family: monospace;
+  max-width: 50px;
+  text-align: center;
+  color: var(--color-background-lightest);
+  border-radius: 0.2rem;
+  border: 2px solid transparent;
+  padding: 2px 4px;
+  margin: 1rem;
+  background: var(--color-background);
+}
+
+.chart-button:hover {
+  color: var(--color-accent);
+}
+
 .Charts-wrapper {
+  height: 320px;
+  width: 320px;
   display: grid;
+  grid-template-rows: 78px 78px 78px 78px;
   grid-template-columns: repeat(5, 1fr);
   justify-items: center;
+}
+
+.Charts-wrapper::after {
+  content: '';
+  flex: auto;
 }
 
 .Chart-item {
@@ -117,29 +162,17 @@ h2 {
   background-color: var(--color-background);
 }
 
-.label {
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  line-height: 2;
-  & .link,
-  &.link {
-    cursor: pointer;
-    transition: $transitionDefault;
-    &:hover {
-      color: var(--color-accent);
-    }
-  }
+.Dial-fill {
+  border-radius: 50%;
+  background-color: var(--color-background);
+  transform-origin: center;
+  transform: rotate(-90deg);
+  -webkit-app-region: no-drag;
 }
 
-.onebyone-enter-active,
-.onebyone-leave-active {
-  transition: all 0.2s ease-in;
-}
-
-.onebyone-enter,
-.onebyone-leave-to {
-  opacity: 0;
-  transform: translate(4px, 34px);
+.Dial-fill circle {
+  fill: var(--color-background);
+  stroke: var(--color-short-round);
 }
 
 </style>
