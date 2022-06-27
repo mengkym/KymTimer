@@ -12,8 +12,8 @@
       </div>
     </div>
     <div class="chart-button-group">
-      <div class="chart-button" v-show="chartType =='month'" id="previousSelector-a-previous"> Prev </div>
-      <div class="chart-button" v-show="chartType =='month'" id="previousSelector-a-next"> Next </div>
+      <div class="chart-button" v-show="chartType =='month'" id="btn-previous"> Prev </div>
+      <div class="chart-button" v-show="chartType =='month'" id="btn-next"> Next </div>
       <div class="chart-button" v-show="chartType =='day'" @click="chartType='month'"> Back </div>
     </div>
   </div>
@@ -35,6 +35,7 @@ export default {
   },
   mounted() {
     this.initCalHeatMap()
+    this.getStartDate()
   },
   methods: {
     getBreakLog() {
@@ -42,6 +43,15 @@ export default {
     },
     getBreakLogDay(day) {
       return store.getDay(day)
+    },
+    getStartDate() {
+      let month = new Date().getMonth()
+      let year = new Date().getFullYear()
+      if (month === 0) {
+        month = 11
+        year--
+      }
+      return new Date(year, month - 1)
     },
     initCalHeatMap() {
       const cal = new CalHeatMap()
@@ -53,16 +63,17 @@ export default {
         domainGutter: 28,
         domainMargin: [42, 0, 0, 0],
         domainDynamicDimension: false,
+        legend: [100, 200, 300, 400],
         legendMargin: [42, 0, 0, 0],
         legendVerticalPosition: 'bottom',
         legendHorizontalPosition: 'left',
         domain: 'month',
         subDomain: 'x_day',
-        start: new Date(2022, 4, 1),
+        start: this.getStartDate(),
         itemName: ['second', 'seconds'],
         subDomainDateFormat: '%Y-%m-%d',
-        previousSelector: '#previousSelector-a-previous',
-        nextSelector: '#previousSelector-a-next',
+        previousSelector: '#btn-previous',
+        nextSelector: '#btn-next',
         data: this.getBreakLog(),
         dataType: 'json',
         onClick: this.clickHeatMapCell

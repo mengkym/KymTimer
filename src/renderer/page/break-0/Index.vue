@@ -62,7 +62,7 @@ html,body {
   width: 100%;
   height: 100%;
   // background: center center / cover rgba(244, 247, 254, 0.2);
-  background: rgba(0,0,0,.2);
+  background: rgba(0,0,0,.5);
   backdrop-filter: blur(5px)
 }
 

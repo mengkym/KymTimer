@@ -52,11 +52,11 @@ let rendererConfig = {
       },
       {
         test: /\.scss$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader?prependData=@import "./src/renderer/assets/stylesheets/main";']
+        use: ['vue-style-loader', 'css-loader', 'sass-loader?additionalData=@import "./src/renderer/assets/stylesheets/main";']
       },
       {
         test: /\.sass$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax=1&prependData=@import "./src/renderer/assets/stylesheets/main"']
+        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax=1&additionalData=@import "./src/renderer/assets/stylesheets/main"']
       },
       {
         test: /\.css$/,
